@@ -6,4 +6,9 @@ public record AuthenticationResponse(
     string? Name,
     string? Gender,
     string? Token,
-    bool Success);
+    bool Success)
+{
+    // Parameterless constructor
+    public AuthenticationResponse() : this(Guid.Empty, null, null, null, null, false)
+    { }
+}
