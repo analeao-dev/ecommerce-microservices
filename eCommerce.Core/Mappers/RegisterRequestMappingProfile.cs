@@ -16,6 +16,6 @@ public class RegisterRequestMappingProfile : Profile
             .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Gender, opt =>
-                opt.MapFrom(src => nameof(src.Gender)));
+                opt.MapFrom(src => src.Gender.ToString()));
     }
 }

@@ -10,7 +10,7 @@ public class ApplicationUserMappingProfile : Profile
     {
         CreateMap<User, AuthenticationResponse>()
             .ForMember(dest => dest.UserId, opt =>
-                opt.MapFrom(src => src.Id))
+                opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Email, opt =>
                 opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.Name, opt =>

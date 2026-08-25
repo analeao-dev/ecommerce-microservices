@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace eCommerceSolution.API.Middlewares;
 
 public class ExceptionHandlingMiddleware
@@ -16,6 +18,14 @@ public class ExceptionHandlingMiddleware
         try
         {
             await _next(context);
+        }
+        catch (ValidationException ex)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                errors = ex.Errors.Select(error => new { error.PropertyName, error.ErrorMessage })
+            });
         }
         catch (Exception ex)
         {
