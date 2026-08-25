@@ -17,9 +17,18 @@ builder.Services.AddCore();
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+builder.Services.AddOpenApi();
+
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(ApplicationUserMappingProfile).Assembly));
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.UseSwaggerUI(options => 
+        options.SwaggerEndpoint("/openapi/v1.json", "eCommerce API v1"));
+}
 
 app.UseExceptionHandlingMiddleware();
 
