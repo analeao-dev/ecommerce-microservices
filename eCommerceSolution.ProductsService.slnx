@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ProductsMicroService.API/ProductsMicroService.API.csproj" />
+  <Project Path="ProductsMicroService.Core/ProductsMicroService.Core.csproj" />
+  <Project Path="ProductsMicroService.Infrastructure/ProductsMicroService.Infrastructure.csproj" />
+</Solution>
