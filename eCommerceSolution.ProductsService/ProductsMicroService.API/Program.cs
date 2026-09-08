@@ -1,5 +1,6 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using ProductsMicroService.API.Handlers;
 using ProductsMicroService.Core;
 using ProductsMicroService.Infrastructure;
 
@@ -22,6 +23,9 @@ builder.Services.AddCore();
 
 builder.Services.AddControllers();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -37,6 +41,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

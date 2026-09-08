@@ -1,6 +1,7 @@
 using ProductsMicroService.Communication.Requests;
 using ProductsMicroService.Communication.Responses;
 using ProductsMicroService.Core.RepositoryContracts;
+using ProductsMicroService.Exception;
 
 namespace ProductsMicroService.Core.UseCases.Category.Register;
 
@@ -15,12 +16,8 @@ public class RegisterCategoryUseCase : IRegisterCategoryUseCase
 
     public async Task<RegisterCategoryResponse> Execute(RegisterCategoryRequest request)
     {
-        var categoryExists = await _categoryRepository.ExistsCategoryByName(request.CategoryName);
-        if (categoryExists)
-        {
-            throw new ApplicationException("Category already exists.");
-        }
-
+        await  Validate(request);
+        
         var category = new Entities.Category
         {
             CategoryName = request.CategoryName
@@ -30,5 +27,24 @@ public class RegisterCategoryUseCase : IRegisterCategoryUseCase
             ?? throw new InvalidOperationException("Category could not be registered.");;
         
         return new RegisterCategoryResponse(addedCategory.CategoryId, addedCategory.CategoryName);
+    }
+
+    private async Task Validate(RegisterCategoryRequest request)
+    {
+        var validator = new RegisterCategoryValidator();
+        
+        var result = await validator.ValidateAsync(request);
+        
+        var categoryExist = await _categoryRepository.ExistsCategoryByName(request.CategoryName);
+        if (categoryExist)
+        {
+            result.Errors.Add(new FluentValidation.Results.ValidationFailure("Category", "Category already exists."));
+        }
+
+        if (result.IsValid == false)
+        {
+            var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
+            throw new ErrorOnValidationException(errorMessages);
+        }
     }
 }
