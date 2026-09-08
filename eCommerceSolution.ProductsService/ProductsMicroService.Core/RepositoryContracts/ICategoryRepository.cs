@@ -6,4 +6,5 @@ public interface ICategoryRepository
 {
     Task<Category?> Add(Category category);
     Task<bool> ExistsCategoryByName(string categoryName);
+    Task<bool> ExistsCategoryById(Guid categoryId);
 }

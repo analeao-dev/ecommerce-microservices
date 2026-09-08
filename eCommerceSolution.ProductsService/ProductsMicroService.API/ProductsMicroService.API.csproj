@@ -22,6 +22,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ProductsMicroService.Communication\ProductsMicroService.Communication.csproj" />
       <ProjectReference Include="..\ProductsMicroService.Core\ProductsMicroService.Core.csproj" />
+      <ProjectReference Include="..\ProductsMicroService.Exception\ProductsMicroService.Exception.csproj" />
       <ProjectReference Include="..\ProductsMicroService.Infrastructure\ProductsMicroService.Infrastructure.csproj" />
     </ItemGroup>
 
