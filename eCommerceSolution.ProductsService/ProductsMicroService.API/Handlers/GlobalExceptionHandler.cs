@@ -22,7 +22,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         if (statusCode == StatusCodes.Status500InternalServerError)
         {
-            _logger.LogError(exception, "Ocorreu um erro inesperado.");
+            _logger.LogError(exception, "Unexpected error occured. Try again later.");
         }
 
         httpContext.Response.StatusCode = statusCode;
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
             _ => (
                 StatusCodes.Status500InternalServerError,
-                "Ocorreu um erro inesperado. Tente novamente mais tarde.",
+                "Unexpected error occured. Try again later.",
                 new Dictionary<string, object?>()),
         };
     }

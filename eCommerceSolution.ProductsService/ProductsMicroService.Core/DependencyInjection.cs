@@ -1,3 +1,6 @@
+using FluentValidation;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using ProductsMicroService.Core.UseCases.Category.Register;
 using ProductsMicroService.Core.UseCases.Product.Register;
@@ -10,6 +13,21 @@ public static class DependencyInjection
     {
         services.AddScoped<IRegisterProductUseCase, RegisterProductUseCase>();
         services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
+        services.AddFluentValidationConfiguration();
+        services.AddMapsterConfiguration();
+
         return services;
+    }
+
+    private static void AddMapsterConfiguration(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
+    }
+
+    private static void AddFluentValidationConfiguration(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssemblyContaining<RegisterProductValidator>();
     }
 }

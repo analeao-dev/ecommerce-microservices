@@ -19,12 +19,21 @@ public class ProductRepository : IProductRepository
         product.ProductId = Guid.NewGuid();
 
         const string query = """
-            INSERT INTO products (product_id, product_name, unit_price, quantity_in_stock, category_id)
-            VALUES (@ProductId, @ProductName, @UnitPrice, @QuantityInStock, @CategoryId)
-            """;
+                             INSERT INTO products (product_id, product_name, unit_price, quantity_in_stock, category_id)
+                             VALUES (@ProductId, @ProductName, @UnitPrice, @QuantityInStock, @CategoryId)
+                             """;
 
         var rowsAffected = await _dbContext.DbConnection.ExecuteAsync(query, product);
 
         return rowsAffected == 0 ? null : product;
+    }
+
+    public async Task<bool> ExistsProductByName(string productName)
+    {
+        const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE LOWER(product_name) = LOWER(@productName))";
+
+        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { productName = @productName });
+
+        return result;
     }
 }

@@ -11,13 +11,15 @@ public class RegisterProductValidator : AbstractValidator<RegisterProductRequest
             .NotEmpty().WithMessage("Product name is required.")
             .MaximumLength(255).WithMessage("Product name must not exceed 255 characters.");
 
-        RuleFor(p => p.Price)
+        RuleFor(p => p.UnitPrice)
+            .NotNull().WithMessage("Unit price is required.")
             .GreaterThan(0).WithMessage("Price must be greater than zero.");
 
-        RuleFor(p => p.Quantity)
+        RuleFor(p => p.QuantityInStock)
+            .NotNull().WithMessage("Quantity in stock is required.")
             .GreaterThan(0).WithMessage("Quantity must be greater than zero.");
 
         RuleFor(p => p.CategoryId)
-            .NotEqual(Guid.Empty).WithMessage("Category is required.");
+            .NotEmpty().WithMessage("Category is required.");
     }
 }

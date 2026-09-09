@@ -5,4 +5,5 @@ namespace ProductsMicroService.Core.RepositoryContracts;
 public interface IProductRepository
 {
     Task<Product?> Add(Product product);
+    Task<bool> ExistsProductByName(string productName);
 }
