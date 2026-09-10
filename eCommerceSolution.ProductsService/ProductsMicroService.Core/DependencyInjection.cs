@@ -3,6 +3,7 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using ProductsMicroService.Core.UseCases.Category.Register;
+using ProductsMicroService.Core.UseCases.Product.Delete;
 using ProductsMicroService.Core.UseCases.Product.Register;
 
 namespace ProductsMicroService.Core;
@@ -13,6 +14,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IRegisterProductUseCase, RegisterProductUseCase>();
         services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
+        services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
         services.AddFluentValidationConfiguration();
         services.AddMapsterConfiguration();
 

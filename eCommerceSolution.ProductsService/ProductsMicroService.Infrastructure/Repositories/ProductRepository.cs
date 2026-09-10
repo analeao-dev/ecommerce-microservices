@@ -28,6 +28,15 @@ public class ProductRepository : IProductRepository
         return rowsAffected == 0 ? null : product;
     }
 
+    public async Task<int> Delete(Guid productId)
+    {
+        const string query = @"DELETE FROM products WHERE product_id = @productId";
+
+        var rowsAffected = await _dbContext.DbConnection.ExecuteAsync(query, new { productId });
+
+        return rowsAffected;
+    }
+
     public async Task<bool> ExistsProductByName(string productName)
     {
         const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE LOWER(product_name) = LOWER(@productName))";

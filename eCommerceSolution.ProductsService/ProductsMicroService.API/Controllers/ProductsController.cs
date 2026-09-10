@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductsMicroService.Communication.Requests;
+using ProductsMicroService.Core.UseCases.Product.Delete;
 using ProductsMicroService.Core.UseCases.Product.Register;
 
 namespace ProductsMicroService.API.Controllers;
@@ -9,17 +10,27 @@ namespace ProductsMicroService.API.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IRegisterProductUseCase _registerProductUseCase;
+    private readonly IDeleteProductUseCase _deleteProductUseCase;
 
-    public ProductsController(IRegisterProductUseCase registerProductUseCase)
+    public ProductsController(IRegisterProductUseCase registerProductUseCase, IDeleteProductUseCase deleteProductUseCase)
     {
         _registerProductUseCase = registerProductUseCase;
+        _deleteProductUseCase = deleteProductUseCase;
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody]RegisterProductRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterProductRequest request)
     {
         var response = await _registerProductUseCase.Execute(request);
-        
+
         return Ok(response);
+    }
+
+    [HttpDelete("{productId}:Guid")]
+    public async Task<IActionResult> Delete([FromRoute] Guid productId)
+    {
+        await _deleteProductUseCase.Execute(productId);
+        
+        return NoContent();
     }
 }
