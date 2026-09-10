@@ -45,4 +45,19 @@ public class ProductRepository : IProductRepository
 
         return result;
     }
+
+    public async Task<List<Product?>> ListAll()
+    {
+        const string query = @"SELECT
+                                    p.product_id,
+                                    p.product_name,
+                                    p.unit_price,
+                                    p.quantity_in_stock,
+                                    c.category_name 
+                                FROM products p
+                                left join categories c on c.category_id = p.category_id";
+
+        var result = await _dbContext.DbConnection.QueryAsync<Product>(query);                        
+        throw new NotImplementedException();
+    }
 }
