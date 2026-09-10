@@ -1,4 +1,5 @@
 using Dapper;
+using ProductsMicroService.Core.Dto;
 using ProductsMicroService.Core.Entities;
 using ProductsMicroService.Core.RepositoryContracts;
 using ProductsMicroService.Infrastructure.DbContext;
@@ -42,6 +43,43 @@ public class ProductRepository : IProductRepository
         const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE LOWER(product_name) = LOWER(@productName))";
 
         var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { productName = @productName });
+
+        return result;
+    }
+
+    public async Task<IEnumerable<ProductDto>> ListAll()
+    {
+        const string query = """
+                             SELECT
+                                 p.product_id AS "ProductId",
+                                 p.product_name AS "ProductName",
+                                 p.unit_price AS "UnitPrice",
+                                 p.quantity_in_stock AS "QuantityInStock",
+                                 c.category_name AS "CategoryName"
+                             FROM products p
+                             LEFT JOIN categories c ON c.category_id = p.category_id
+                             """;
+
+        var result = await _dbContext.DbConnection.QueryAsync<ProductDto>(query);
+
+        return result;
+    }
+
+    public async Task<ProductDto?> GetProductById(Guid productId)
+    {
+        const string query = """
+                             SELECT
+                                 p.product_id AS "ProductId",
+                                 p.product_name AS "ProductName",
+                                 p.unit_price AS "UnitPrice",
+                                 p.quantity_in_stock AS "QuantityInStock",
+                                 c.category_name AS "CategoryName"
+                             FROM products p
+                             LEFT JOIN categories c ON c.category_id = p.category_id
+                             WHERE p.product_id = @productId
+                             """;
+
+        var result = await _dbContext.DbConnection.QuerySingleOrDefaultAsync<ProductDto>(query, new { ProductId = productId });;
 
         return result;
     }
