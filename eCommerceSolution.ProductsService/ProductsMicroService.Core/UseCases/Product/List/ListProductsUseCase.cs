@@ -1,6 +1,7 @@
 using Mapster;
 using MapsterMapper;
 using ProductsMicroService.Communication.Responses;
+using ProductsMicroService.Core.Dto;
 using ProductsMicroService.Core.Entities;
 using ProductsMicroService.Core.RepositoryContracts;
 using ProductsMicroService.Core.UseCases.Product.List;
@@ -16,12 +17,12 @@ public class ListProductsUseCase : IListProductsUseCase
         _mapper = mapper;
     }
 
-    public async Task<List<ListProductsResponse>> Execute()
+    public async Task<IReadOnlyList<ProductResponse>> Execute()
     {
         var products = await _productRepository.ListAll();
 
-        var response = _mapper.Map<Product>(products);
+        var response = _mapper.Map<List<ProductResponse>>(products);
 
-        return new List<ListProductsResponse>();
+        return response;
     }
 }

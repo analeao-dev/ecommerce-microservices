@@ -4,5 +4,5 @@ namespace ProductsMicroService.Core.UseCases.Product.List;
 
 public interface IListProductsUseCase
 {
-    Task<List<ListProductsResponse>> Execute();
+    Task<IReadOnlyList<ProductResponse>> Execute();
 }
