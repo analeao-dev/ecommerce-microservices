@@ -79,7 +79,39 @@ public class ProductRepository : IProductRepository
                              WHERE p.product_id = @productId
                              """;
 
-        var result = await _dbContext.DbConnection.QuerySingleOrDefaultAsync<ProductDto>(query, new { ProductId = productId });;
+        var result = await _dbContext.DbConnection.QuerySingleOrDefaultAsync<ProductDto>(query, new { ProductId = productId }); ;
+
+        return result;
+    }
+
+    public async Task<int> Update(Guid productId, UpdateProductRequest request)
+    {
+        const string query = """
+                         UPDATE products
+                         SET product_name = @ProductName,
+                             unit_price = @UnitPrice,
+                             quantity_in_stock = @QuantityInStock,
+                             category_id = @CategoryId
+                         WHERE product_id = @ProductId
+                         """;
+
+        var rowsAffected = await _dbContext.DbConnection.ExecuteAsync(query, new
+        {
+            ProductId = productId,
+            request.ProductName,
+            request.UnitPrice,
+            request.QuantityInStock,
+            request.CategoryId
+        });
+
+        return rowsAffected;
+    }
+
+    public async Task<bool> ExistsProductById(Guid productId)
+    {
+        const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE product_id = @productId)";
+
+        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { productId = @productId });
 
         return result;
     }

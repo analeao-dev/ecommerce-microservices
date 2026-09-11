@@ -5,6 +5,7 @@ using ProductsMicroService.Core.UseCases.Product.Delete;
 using ProductsMicroService.Core.UseCases.Product.Get;
 using ProductsMicroService.Core.UseCases.Product.List;
 using ProductsMicroService.Core.UseCases.Product.Register;
+using ProductsMicroService.Core.UseCases.Product.Update;
 
 namespace ProductsMicroService.API.Controllers;
 
@@ -16,15 +17,17 @@ public class ProductsController : ControllerBase
     private readonly IDeleteProductUseCase _deleteProductUseCase;
     private readonly IListProductsUseCase _listProductsUseCase;
     private readonly IGetProductByIdUseCase _getProductByIdUseCase;
+    private readonly IUpdateProductUseCase _updateProductUseCase;
 
     public ProductsController(IRegisterProductUseCase registerProductUseCase,
         IDeleteProductUseCase deleteProductUseCase, IListProductsUseCase listProductsUseCase,
-        IGetProductByIdUseCase getProductByIdUseCase)
+        IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductUseCase updateProductUseCase)
     {
         _registerProductUseCase = registerProductUseCase;
         _deleteProductUseCase = deleteProductUseCase;
         _listProductsUseCase = listProductsUseCase;
         _getProductByIdUseCase = getProductByIdUseCase;
+        _updateProductUseCase = updateProductUseCase;
     }
 
     [HttpGet]
@@ -54,7 +57,7 @@ public class ProductsController : ControllerBase
     {
         var response = await _registerProductUseCase.Execute(request);
 
-        return Ok(response);
+        return Created("", response);
     }
 
     [HttpDelete("{productId:guid}")]
@@ -64,4 +67,18 @@ public class ProductsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut("{productId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update([FromRoute] Guid productId, [FromBody] UpdateProductRequest request)
+    {
+        var response = await _updateProductUseCase.Execute(productId, request);
+
+        // if (!response)
+        //     return NotFound();
+
+        return NoContent();
+    }
+
 }

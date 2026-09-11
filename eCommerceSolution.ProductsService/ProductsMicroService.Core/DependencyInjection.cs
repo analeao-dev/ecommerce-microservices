@@ -7,6 +7,7 @@ using ProductsMicroService.Core.UseCases.Product.Delete;
 using ProductsMicroService.Core.UseCases.Product.Get;
 using ProductsMicroService.Core.UseCases.Product.List;
 using ProductsMicroService.Core.UseCases.Product.Register;
+using ProductsMicroService.Core.UseCases.Product.Update;
 
 namespace ProductsMicroService.Core;
 
@@ -28,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
         services.AddScoped<IListProductsUseCase, ListProductsUseCase>();
         services.AddScoped<IGetProductByIdUseCase, GetProductByIdUseCase>();
+        services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
     }
 
     private static void AddMapsterConfiguration(this IServiceCollection services)
@@ -40,5 +42,6 @@ public static class DependencyInjection
     private static void AddFluentValidationConfiguration(this IServiceCollection services)
     {
         services.AddValidatorsFromAssemblyContaining<RegisterProductValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateProductValidator>();
     }
 }
