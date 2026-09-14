@@ -2,6 +2,8 @@ using FluentValidation;
 using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
+using ProductsMicroService.Core.UseCases.Category.Get;
+using ProductsMicroService.Core.UseCases.Category.List;
 using ProductsMicroService.Core.UseCases.Category.Register;
 using ProductsMicroService.Core.UseCases.Product.Delete;
 using ProductsMicroService.Core.UseCases.Product.Get;
@@ -25,11 +27,14 @@ public static class DependencyInjection
     private static void AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<IRegisterProductUseCase, RegisterProductUseCase>();
-        services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
         services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
         services.AddScoped<IListProductsUseCase, ListProductsUseCase>();
         services.AddScoped<IGetProductByIdUseCase, GetProductByIdUseCase>();
         services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
+        
+        services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
+        services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
+        services.AddScoped<IListCategoriesUseCase, ListCategoriesUseCase>();
     }
 
     private static void AddMapsterConfiguration(this IServiceCollection services)

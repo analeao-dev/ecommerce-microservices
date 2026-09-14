@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
+using ProductsMicroService.Communication.Requests;
 using ProductsMicroService.Core.Dto;
 using ProductsMicroService.Core.RepositoryContracts;
 using ProductsMicroService.Exception;

@@ -1,4 +1,5 @@
 using Dapper;
+using ProductsMicroService.Core.Dto;
 using ProductsMicroService.Core.Entities;
 using ProductsMicroService.Core.RepositoryContracts;
 using ProductsMicroService.Infrastructure.DbContext;
@@ -43,5 +44,49 @@ public class CategoryRepository : ICategoryRepository
         var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { categoryId = categoryId });
 
         return result;
+    }
+
+    public async Task<IEnumerable<CategoryDto>> ListAll()
+    {
+        const string query = """
+                             SELECT
+                                 c.category_id AS "CategoryId",
+                                 c.category_name AS "CategoryName",
+                                 c.is_active AS "IsActive"
+                             FROM categories c
+                             WHERE cc.is_active = true
+                             """;
+
+        var result = await _dbContext.DbConnection.QueryAsync<CategoryDto>(query);
+
+        return result;
+    }
+
+    public async Task<CategoryDto?> GetCategoryById(Guid categoryId)
+    {
+        const string query = """
+                             SELECT
+                                 c.category_id AS "CategoryId",
+                                 c.category_name AS "CategoryName",
+                                 c.is_active AS "IsActive"
+                             FROM categories c
+                             WHERE cc.category_id = @categoryId
+                             """;
+
+        var result = await _dbContext.DbConnection.QuerySingleOrDefaultAsync<CategoryDto>(query, new { CategoryId = categoryId });
+
+        return result;
+    }
+
+    public async Task<int> Delete(Guid categoryId, bool isActive)
+    {
+        const string query = """
+                         UPDATE categories
+                            SET is_active = @IsActive
+                         WHERE category_id = @CategoryId
+                         """;
+        var rowsAffected = await _dbContext.DbConnection.ExecuteAsync(query, new { CategoryId = categoryId, IsActive = isActive });
+
+        return rowsAffected;
     }
 }

@@ -1,23 +1,25 @@
+using ProductsMicroService.Communication.Requests;
 using ProductsMicroService.Core.RepositoryContracts;
 
 namespace ProductsMicroService.Core.UseCases.Product.Delete;
 
 public class DeleteProductUseCase : IDeleteProductUseCase
 {
-    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public DeleteProductUseCase(IProductRepository productRepository)
+    public DeleteProductUseCase(ICategoryRepository categoryRepository)
     {
-        _productRepository = productRepository;
+        _categoryRepository = categoryRepository;
     }
 
-    public async Task Execute(Guid productId)
+    public async Task Execute(Guid categoryId, bool isActive)
     {
-        await _productRepository.Delete(productId);
+        await _categoryRepository.Delete(categoryId, isActive);
     }
-
-    private async Task Validate()
+                    
+    private async Task Validate(Guid categoryId, DeleteCategoryRequest request)
     {
         var validator = new DeleteProductValidator();
+        var categoryExists = await _categoryRepository.ExistsCategoryById(categoryId);
     }
 }

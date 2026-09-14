@@ -42,7 +42,7 @@ public class ProductRepository : IProductRepository
     {
         const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE LOWER(product_name) = LOWER(@productName))";
 
-        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { productName = @productName });
+        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { ProductName = @productName });
 
         return result;
     }
@@ -111,7 +111,7 @@ public class ProductRepository : IProductRepository
     {
         const string query = @"SELECT EXISTS (SELECT 1 FROM products WHERE product_id = @productId)";
 
-        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { productId = @productId });
+        var result = await _dbContext.DbConnection.ExecuteScalarAsync<bool>(query, new { ProductId = @productId });
 
         return result;
     }

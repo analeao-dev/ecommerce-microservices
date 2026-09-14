@@ -1,3 +1,4 @@
+using ProductsMicroService.Communication.Requests;
 using ProductsMicroService.Core.Dto;
 
 namespace ProductsMicroService.Core.UseCases.Product.Update;

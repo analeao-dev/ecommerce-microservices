@@ -73,7 +73,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromRoute] Guid productId, [FromBody] UpdateProductRequest request)
     {
-        var response = await _updateProductUseCase.Execute(productId, request);
+        await _updateProductUseCase.Execute(productId, request);
 
         // if (!response)
         //     return NotFound();
